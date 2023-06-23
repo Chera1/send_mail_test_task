@@ -1,0 +1,67 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body style="background-color: #F4F6FA; padding: 20px;">
+<div style="width:90%;max-width:700px; background-color: #FFF;margin: 20px auto; padding: 3%;
+border: 1px solid #E0E0E1; border-radius: 10px;">
+    <img class="t228__imglogo t228__imglogomobile" src="https://static.tildacdn.com/tild6332-6435-4264-b166-613933646538/Page_1.svg" imgfield="img" style="max-width: 120px; width: 120px; min-width: 120px; height: auto; display: block;" alt="Mailganer">
+    <hr style="
+        background-color: #E0E0E1;
+        display: block;
+        height: 1px;
+        border: 0;
+        border-top: 1px solid #e0e0e1;
+        margin: 1em 0;
+        color:#E0E0E1;">
+    <h1 style="font-size:20px;">Hello {{ user.username }}, Thanks for subscribing us. You will get notification of
+        the latest articles posted on our website. Please do not reply on this email. !</h1>
+    <p style="
+        font-size: 16px;
+        line-height: 24px;
+        color: black;">Hi {{ user.first_name }} {{ user.last_name }}!</p>
+    <p style="text-align: center;
+        font-size: 16px;
+        line-height: 24px;">
+        <a href="{{ domain }}/sign-up?token={{ token }}&first_name={{ user.first_name }}&last_name={{ user.last_name }}&email={{ user.email }}"
+           target="_blank"
+           style="
+        background-color: #FF5722;
+        padding: 10px 15%;
+        border-radius: 10px;
+        font-family: Helvetica, Arial, sans-serif;
+        font-size: 16px;
+        color: #ffffff;
+        text-decoration: none;
+        font-weight: bold;
+        display: inline-block;
+">Confirm subscribe</a>
+    </p>
+    <p style="font-size: 16px;
+        line-height: 24px;">If you are having trouble with the button, please click this link:</p>
+    <a style="font-size: 16px;
+        line-height: 24px;color:#ff5722;"
+       href="{{ domain }}/sign-up?token={{ token }}&first_name={{ user.first_name }}&last_name={{ user.last_name }}&email={{ user.email }}"
+       target="_blank">{{ domain }}/sign-up?token={{ token }}&first_name={{ user.first_name }}&last_name={{ user.last_name }}&email={{ user.email }}</a>
+    <br>
+    <br>
+    <hr>
+    <br>
+    <div style="padding: 12px 24px 12px 24px; background-color: #F4F6FA; border-radius: 8px; width:100%;max-width: 650px;">
+        <p style="font-size: 16px;
+        line-height: 24px;
+        color: black;">Some text about project.</p>
+        <a style="font-size: 16px;
+        line-height: 24px; color:#FF5722" href="https://mailganer.com/ru/">Learn More</a>
+    </div>
+    <p style="text-align: center;
+        font-size: 16px;
+        line-height: 24px;
+        color: black;">© 2023 MailGaner</p>
+</div>
+</body>
+</html>

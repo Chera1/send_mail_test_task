@@ -1,0 +1,83 @@
+version: '3.7'
+
+services:
+  api:
+    build: .
+    volumes:
+      - .:/app:cached
+      - ~/.ssh:/root/.ssh
+      - ~/.bash_history:/root/.bash_history
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+      - celery
+    environment: &api-environment
+      DJANGO_SECRET_KEY: secret_key
+      DATABASE_NAME: postgres
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: postgres
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      EMAIL_USE_SSL: 0
+      EMAIL_USE_TLS: 1
+      EMAIL_HOST: smtp.mailgun.org
+      EMAIL_HOST_USER: ${EMAIL_HOST_USER}
+      DEFAULT_FROM_EMAIL: ${DEFAULT_FROM_EMAIL}
+      EMAIL_HOST_PASSWORD: ${EMAIL_HOST_PASSWORD}
+      MAILGUN_ACCESS_KEY: ${MAILGUN_ACCESS_KEY}
+      MAILGUN_SERVER_NAME: ${MAILGUN_SERVER_NAME}
+      EMAIL_PORT: 587
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    command: python manage.py runserver 0.0.0.0:8000
+
+  db:
+    image: postgres:12
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+  redis:
+    image: redis:6-alpine
+    ports:
+      - "6379:6379"
+
+  celery:
+    build: .
+    command: celery --app=main worker --loglevel=info
+    environment:
+      <<: *api-environment
+    volumes:
+      - .:/app
+    depends_on:
+      - redis
+    ports:
+      - "8004:8004"
+
+  celery-beat:
+    build: .
+    command: celery --app=main beat --loglevel=info
+    volumes:
+      - .:/app
+    environment:
+      <<: *api-environment
+    depends_on:
+      - redis
+    ports:
+      - "8005:8005"
+
+  flower:
+    build: .
+    command: celery --app=main flower --broker=redis://redis:6379/0  --port=5555
+    environment:
+      <<: *api-environment
+    volumes:
+      - .:/app
+    ports:
+      - "5555:5555"
+    depends_on:
+      - redis
