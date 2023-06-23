@@ -36,7 +36,7 @@ const subscribeUser = function (email, username, firstName, lastName, birthDay) 
         }
     });
     $.ajax({
-        url: '/newsletter/',
+        url: '/subscribe/',
         type: 'POST',
         dataType: 'json',
         cache: false,

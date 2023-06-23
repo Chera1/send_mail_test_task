@@ -10,16 +10,16 @@ app = Celery("main")
 app.config_from_object("django.conf:settings", namespace="CELERY")
 app.autodiscover_tasks()
 
-# app.conf.beat_schedule = {
-#     'send_email_every_five_minute': {
-#         'task': 'main.tasks.send_mass_mails',
-#         'schedule': crontab(5),
-#     },
-#     'get_log_every_five_minute': {
-#         'task': 'main.tasks.get_logs',
-#         'schedule': crontab(5),
-#     }
-# }
+app.conf.beat_schedule = {
+    'send_email_every_five_minute': {
+        'task': 'main.tasks.send_mass_mails',
+        'schedule': crontab(5),
+    },
+    'get_log_every_five_minute': {
+        'task': 'main.tasks.get_logs',
+        'schedule': crontab(5),
+    }
+}
 
 if __name__ == "__main__":
     app.start()
